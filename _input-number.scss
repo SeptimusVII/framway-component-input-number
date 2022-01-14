@@ -7,7 +7,7 @@ input::-o-inner-spin-button,
 input::-o-outer-spin-button {-o-appearance: none; margin:0 }
 
 .input-number__container{position: relative; display: inline-block; width: 100%; margin-bottom: $spacing; margin-right: $spacing;
-  @include media-max(xs){margin-bottom: $spacing/2; margin-right: $spacing/2;}
+  @include media-max(xs){margin-bottom: $spacing*0.5; margin-right: $spacing*0.5;}
   .input-group>&,
   .form-group>&{margin-bottom: 0;
     @include media-max(xs){margin-bottom: 0;}
