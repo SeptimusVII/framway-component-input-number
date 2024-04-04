@@ -2,8 +2,8 @@ module.exports = function(app){
     var InputNumber = Object.getPrototypeOf(app).InputNumber = new app.Component("input-number");
     //InputNumber.debug = true;
     InputNumber.createdAt      = "2.0.0";
-    InputNumber.lastUpdate     = "2.3.3";
-    InputNumber.version        = "1.0.1";
+    InputNumber.lastUpdate     = "2.5.0";
+    InputNumber.version        = "1.1.0";
     // InputNumber.factoryExclude = true;
     // InputNumber.loadingMsg     = "This message will display in the console when component will be loaded.";
     // InputNumber.requires       = [];
@@ -24,6 +24,13 @@ module.exports = function(app){
         input.$buttonMinus.on('click',function(){
             input.$el.get(0).stepDown();
             input.$el.trigger('change');
+        });
+
+        input.$el.on('change',function(){
+            if (this.value != '' && parseInt(this.value) < parseInt(this.getAttribute('min')))
+                this.value = this.getAttribute('min');
+            if (this.value != '' && parseInt(this.value) > parseInt(this.getAttribute('max')))
+                this.value = this.getAttribute('max');
         });
     }
 
