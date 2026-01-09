@@ -2,8 +2,8 @@ module.exports = function(app){
     var InputNumber = Object.getPrototypeOf(app).InputNumber = new app.Component("input-number");
     //InputNumber.debug = true;
     InputNumber.createdAt      = "2.0.0";
-    InputNumber.lastUpdate     = "2.6.0";
-    InputNumber.version        = "1.1.1";
+    InputNumber.lastUpdate     = "2.8.0";
+    InputNumber.version        = "1.1.2";
     // InputNumber.factoryExclude = true;
     // InputNumber.loadingMsg     = "This message will display in the console when component will be loaded.";
     // InputNumber.requires       = [];
@@ -18,11 +18,23 @@ module.exports = function(app){
         input.$buttonMinus = $('<div class="input-number__btn minus">-</div>').appendTo(input.$buttonsContainer);
 
         input.$buttonPlus.on('click',function(){
-            input.$el.get(0).stepUp();
+            if (input.$el.get(0).step == "any") {
+                input.$el.get(0).step = 1;
+                input.$el.get(0).stepUp();
+                input.$el.get(0).step = "any";
+            } else {
+                input.$el.get(0).stepUp();
+            }
             input.$el.trigger('change');
         });
         input.$buttonMinus.on('click',function(){
-            input.$el.get(0).stepDown();
+            if (input.$el.get(0).step == "any") {
+                input.$el.get(0).step = 1;
+                input.$el.get(0).stepDown();
+                input.$el.get(0).step = "any";
+            } else {
+                input.$el.get(0).stepDown();
+            }
             input.$el.trigger('change');
         });
 
