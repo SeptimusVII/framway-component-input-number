@@ -12,6 +12,8 @@ input::-o-outer-spin-button {-o-appearance: none; margin:0 }
   .form-group>&{margin-bottom: 0;
     @include media-max(xs){margin-bottom: 0;}
   }
+
+  &:has(input[readonly]) .input-number__buttonsContainer{pointer-events: none;}
 }
 .input-number__input[type="number"],
 .input-number__input[type="text"]{width: 100%; margin: 0;padding-right: 1.5rem;}
