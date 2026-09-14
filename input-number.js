@@ -18,6 +18,9 @@ module.exports = function(app){
         input.$buttonMinus = $('<div class="input-number__btn minus">-</div>').appendTo(input.$buttonsContainer);
 
         input.$buttonPlus.on('click',function(){
+            if(input.$el.get(0).readOnly || input.$el.get(0).disabled){
+                return;
+            }
             if (input.$el.get(0).step == "any") {
                 input.$el.get(0).step = 1;
                 input.$el.get(0).stepUp();
@@ -28,6 +31,9 @@ module.exports = function(app){
             input.$el.trigger('change');
         });
         input.$buttonMinus.on('click',function(){
+            if(input.$el.get(0).readOnly || input.$el.get(0).disabled){
+                return;
+            }
             if (input.$el.get(0).step == "any") {
                 input.$el.get(0).step = 1;
                 input.$el.get(0).stepDown();
