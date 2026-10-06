@@ -1,63 +1,69 @@
-module.exports = function(app){
-    var InputNumber = Object.getPrototypeOf(app).InputNumber = new app.Component("input-number");
-    //InputNumber.debug = true;
-    InputNumber.createdAt      = "2.0.0";
-    InputNumber.lastUpdate     = "2.8.0";
-    InputNumber.version        = "1.1.3";
-    // InputNumber.factoryExclude = true;
-    // InputNumber.loadingMsg     = "This message will display in the console when component will be loaded.";
-    // InputNumber.requires       = [];
+module.exports = function(){
+    let InputNumber = Object.getPrototypeOf(fw).InputNumber = class InputNumber extends fw.Component{
+        static {
+            this.debug = true;
+            this.createdAt  = "3.0.0";
+            this.lastUpdate = "3.0.0";
+            this.version = "2.0.0";
+            this.tpl = utils.getNodeFromString(require('bundle-tpl:./input-number.html')).outerHTML;
+            // this.describe();
+        }
+        onCreate(){
+            let inputNumber = this;
+            this.input = this.el;
+            this.input.classList.add('input-number__input','exclude_component');
+            this.input.classList.remove('input-number');
+            this.el = utils.htmlToNode('<div class="input-number__wrapper"></div>');
+            this.input.after(this.el);
 
-    InputNumber.prototype.onCreate = function(){
-        var input = this;
-        input.$el.addClass('input-number__input');
-        input.$container = $('<div class="input-number__container"></div>');
-        input.$el.wrapAll(input.$container);
-        input.$buttonsContainer = $('<div class="input-number__buttonsContainer"></div>').insertAfter(input.$el);
-        input.$buttonPlus= $('<div class="input-number__btn plus">+</div>').appendTo(input.$buttonsContainer);
-        input.$buttonMinus = $('<div class="input-number__btn minus">-</div>').appendTo(input.$buttonsContainer);
+            this.buttonsWrapper = utils.htmlToNode('<div class="input-number__buttonsWrapper"></div>');
+            this.buttonPlus     = utils.htmlToNode('<div class="input-number__btn plus">+</div>');
+            this.buttonMinus    = utils.htmlToNode('<div class="input-number__btn minus">-</div>');
 
-        input.$buttonPlus.on('click',function(){
-            if(input.$el.get(0).readOnly || input.$el.get(0).disabled){
-                return;
-            }
-            if (input.$el.get(0).step == "any") {
-                input.$el.get(0).step = 1;
-                input.$el.get(0).stepUp();
-                input.$el.get(0).step = "any";
-            } else {
-                input.$el.get(0).stepUp();
-            }
-            input.$el.trigger('change');
-        });
-        input.$buttonMinus.on('click',function(){
-            if(input.$el.get(0).readOnly || input.$el.get(0).disabled){
-                return;
-            }
-            if (input.$el.get(0).step == "any") {
-                input.$el.get(0).step = 1;
-                input.$el.get(0).stepDown();
-                input.$el.get(0).step = "any";
-            } else {
-                input.$el.get(0).stepDown();
-            }
-            input.$el.trigger('change');
-        });
+            this.buttonsWrapper.append(this.buttonPlus,this.buttonMinus);
+            this.el.append(this.input,this.buttonsWrapper);
 
-        input.$el.on('change',function(){
-            if (this.value != '' && parseInt(this.value) < parseInt(this.getAttribute('min')))
-                this.value = this.getAttribute('min');
-            if (this.value != '' && parseInt(this.value) > parseInt(this.getAttribute('max')))
-                this.value = this.getAttribute('max');
-        });
+            this.buttonPlus.addEventListener('click',function(){
+                if(inputNumber.input.readOnly || inputNumber.input.disabled){
+                    return;
+                }
+                if (inputNumber.input.step == "any") {
+                    inputNumber.input.step = 1;
+                    inputNumber.input.stepUp();
+                    inputNumber.input.step = "any";
+                } else {
+                    inputNumber.input.stepUp();
+                }
+                inputNumber.input.trigger('change');
+            });
+            this.buttonMinus.addEventListener('click',function(){
+                if(inputNumber.input.readOnly || inputNumber.input.disabled){
+                    return;
+                }
+                if (inputNumber.input.step == "any") {
+                    inputNumber.input.step = 1;
+                    inputNumber.input.stepDown();
+                    inputNumber.input.step = "any";
+                } else {
+                    inputNumber.input.stepDown();
+                }
+                inputNumber.input.trigger('change');
+            });
+
+            this.input.addEventListener('change',function(){
+                if (this.value != '' && parseInt(this.value) < parseInt(this.getAttribute('min')))
+                    this.value = this.getAttribute('min');
+                if (this.value != '' && parseInt(this.value) > parseInt(this.getAttribute('max')))
+                    this.value = this.getAttribute('max');
+            });
+
+            this.log('onCreate','',true)
+        }
     }
 
+    document.querySelectorAll('input[type="number"]:not(.custom):not(.input-number):not(.exclude_component)').forEach((el)=>{
+        new fw.InputNumber(el);
+    })
 
-    $(function () {
-        $('input[type="number"]').not('.custom')['input-number']();
-        utils.addHtmlHook('input[type="number"]:not(.custom)', function(item){
-            item['input-number']();
-        });
-    });
     return InputNumber;
 }
