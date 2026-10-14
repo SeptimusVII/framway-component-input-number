@@ -61,9 +61,11 @@ module.exports = function(){
         }
     }
 
-    document.querySelectorAll('input[type="number"]:not(.custom):not(.input-number):not(.exclude_component)').forEach((el)=>{
-        new fw.InputNumber(el);
-    })
+    window.addEventListener("load", function(e) {
+        document.querySelectorAll('input[type="number"]:not(.custom):not(.input-number):not(.exclude_component)').forEach((el)=>{
+            new fw.InputNumber(el);
+        })
+    });
 
     return InputNumber;
 }
