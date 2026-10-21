@@ -61,11 +61,22 @@ module.exports = function(){
         }
     }
 
-    window.addEventListener("load", function(e) {
-        document.querySelectorAll('input[type="number"]:not(.custom):not(.input-number):not(.exclude_component)').forEach((el)=>{
-            new fw.InputNumber(el);
-        })
+    let inputNumberObserver = new MutationObserver(function(mutations) {
+        mutations.forEach( function (mutation) {
+            if (typeof mutation.addedNodes == "object") {
+                mutation.addedNodes.forEach(function (node) {
+                    if (node.nodeType != 1 || node.classList.contains('exclude_component'))
+                        return;
+                    if (node.getAttribute('type') == 'number' && !node.classList.fw__containsAny(['custom','input-number','exclude_component'])) {
+                        new fw.InputNumber(node);
+                        InputNumber.prototype.log('An input-number has been added to the DOM and initialized',node);
+                    }
+                })
+            }
+        });
     });
+    inputNumberObserver.observe(document, {attributes: false, childList: true, characterData: false, subtree:true});
+
 
     return InputNumber;
 }
