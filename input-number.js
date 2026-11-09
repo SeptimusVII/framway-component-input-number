@@ -61,6 +61,11 @@ module.exports = function(){
         }
     }
 
+    window.addEventListener("load", function(e) {
+        document.querySelectorAll('input[type="number"]:not(.custom):not(.input-number):not(.exclude_component)').forEach((el)=>{
+            new fw.InputNumber(el);
+        })
+    });
     let inputNumberObserver = new MutationObserver(function(mutations) {
         mutations.forEach( function (mutation) {
             if (typeof mutation.addedNodes == "object") {
